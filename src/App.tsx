@@ -12,21 +12,117 @@ const bgColor = "yellow";
 const color = "red";
 
 
-class App extends Component {
+// Mouting
+// -> constructor(call only once)
+// -> getDerivedStateFromProps
+// -> render
+// -> componentDidMount (call only once)
 
-  state = {
-    count: 0
+// Updating
+
+// 1. getDerivedStateFromProps
+
+// 3. render
+
+
+
+// Unmounting
+
+// Error
+
+
+
+// component will rerender only when state or props change
+class App extends Component {
+  // state = {
+  //   count: 0
+  // }
+
+  // base on props derive new state value
+  // binding method with class
+
+  // Call only once
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // greet: `Mr. ${props.firstName} ${props.lastName}`,
+      count: 0,
+      product: null
+    }
+
+    // this.increment = this.increment.bind(this)
+
+    console.log("Constructor", props);
+
+    // api call for alalytics
+  }
+
+  // will call everytime whenever props or state value change
+  // static getDerivedStateFromProps(props, state) {
+  //   console.log("getDerivedStateFromProps");
+  //   console.log(props);
+    
+  //   return {
+  //     greet: `Mr. ${props.firstName} ${props.lastName}`,
+  //   }
+    
+  // }
+
+  // on the page load get data and display data
+  // register event listner
+  async componentDidMount() { 
+    console.log("componentDidMount");
+    
+    const h1Ele = document.getElementById("heading");
+
+    if(h1Ele) {
+      h1Ele.style.color = "red"
+    }
+
+    document.addEventListener("copy", () => {
+      console.log("Coppied");
+    })
+
+    try {
+      const res = await fetch("https://fakestoreapi.com/products/1");
+      const product = await res.json();
+
+      console.log(product);
+
+      this.setState({product: product})
+      
+    } catch (error) {
+      
+    }
+   }
+
+  increment = () => {
+    this.setState((state) => {
+      return { count: state.count + 1}
+    })
   }
 
   render() {
     console.log("render");
-    
     const {firstName, lastName} = this.props;
+    const { greet, count, product } = this.state; 
 
+    
+    
     return (
       <>
-        <h1>{this.state.count}</h1>
-        <p
+        <h1 id="heading">{greet}</h1>
+        <h2>{count}</h2>
+
+       {product && <div>
+          <h3>Prduct Details</h3>
+          <img src={product.image} alt="Product Image" />
+          <p>{product.title}</p>
+          <p>{product.description}</p>
+
+        </div>}
+        {/* <p
           className="wrapper"
           style={{
             backgroundColor: bgColor,
@@ -37,15 +133,9 @@ class App extends Component {
           {firstName}
         </p>
         <p>{lastName}</p>
-        <Test />
+        <Test /> */}
         <input type="checkbox" />
-        <button type="button" onClick={() => {
-          // this.state.count = this.state.count + 1;
-          // this.setState({count: 5})
-          this.setState((state) => {
-            return { count: state.count + 1}
-          })
-        }}>Increment Count</button>
+        <button type="button" onClick={this.increment}>Increment Count</button>
       </>
     );
   }
