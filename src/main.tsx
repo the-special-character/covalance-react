@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { Component } from "react";
+import Child from "./Child";
 
 // First letter of component should be upper case.
 // return single element
@@ -9,7 +10,6 @@ import { Component } from "react";
 // instead of class you should use className
 
 App.getDerivedStateFromProps = (props, state) => {
-    console.log(this);
     
     return {
         greet: `Mr. ${props.firstName} ${props.lastName}`,
@@ -20,6 +20,7 @@ class Test extends Component {
   state = {
     firstName: "Yagnesh",
     lastName: "modh",
+    count: 0
   };
 
   changeName = () => {
@@ -29,14 +30,23 @@ class Test extends Component {
     });
   };
 
+  updateCount = () => {
+    this.setState(({count}) => { return { 
+      count: count + 1
+     }})
+  }
+
   render() {
-    const { firstName, lastName } = this.state;
+    const { firstName, lastName, count } = this.state;
     return (
       <>
-        <App firstName={firstName} lastName={lastName} />
+        {count < 5 && <App firstName={firstName} lastName={lastName} />}
+        <Child count={count} />
         <button type="button" onClick={this.changeName}>
           Change Name
         </button>
+        <h1>{count}</h1>
+        <button type="button" onClick={this.updateCount}>Change Count</button>
       </>
     );
   }
