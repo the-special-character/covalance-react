@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { Component } from "react";
+import { Component, ErrorInfo } from "react";
 import Child from "./Child";
 
 // First letter of component should be upper case.
@@ -36,11 +36,27 @@ class Test extends Component {
      }})
   }
 
+  static getDerivedStateFromError(error) {
+    return {
+      error
+    }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log("errorInfo", errorInfo.componentStack);
+    // error loging mechanism
+  }
+
   render() {
-    const { firstName, lastName, count } = this.state;
+    const { firstName, lastName, count, error } = this.state;
+
+    // if(error) {
+    //   return 
+    // }
+
     return (
       <>
-        {count < 5 && <App firstName={firstName} lastName={lastName} />}
+        {error ? <h1>{error.message}</h1> : <App firstName={firstName} lastName={lastName} />}
         <Child count={count} />
         <button type="button" onClick={this.changeName}>
           Change Name

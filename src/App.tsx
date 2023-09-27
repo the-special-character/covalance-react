@@ -21,22 +21,44 @@ const color = "red";
 
 // Mouting
 // -> constructor(call only once)
+// 1. base on props define state.
+// 2. Analytics
+// 3. bind methods
+
 // -> getDerivedStateFromProps
+// 1. derive state value based on props and state
+
 // -> render
+// 1. render HTML (DOM)
+
 // -> componentDidMount (call only once)
+// -> 1. on page load if you want get data from API
+// -> 2. register events
 
 // Updating
 
 // 1. getDerivedStateFromProps
-// 2. shouldComponentUpdate (for performace)
+
+// 2. shouldComponentUpdate (for performace) /PureComponent(class) / Memo(function)
+// 1. avoid unnesessary rerendering
+
 // 3. render
+
 // 4. getSnapshotBeforeUpdate
+// 1. take Snapshot of current screen and pass data to componentDidMount
+
 // 5. componentDidUpdate
+// 1. manipulate dom
 
 // Unmounting
 // 1. componentWillUnmount (for performace)
+// 1. remove all async calls
 
 // Error
+
+// 1. getDerivedStateFromError
+// 2. componentDidCatch
+
 
 // component will rerender only when state or props change
 class App extends PureComponent {
@@ -153,6 +175,7 @@ class App extends PureComponent {
   };
 
   increment = () => {
+    // throw new Error("something went wrong...")
     this.setState((state) => {
       return { count: state.count + 1 };
     });
@@ -162,6 +185,10 @@ class App extends PureComponent {
     console.log("render");
     const { firstName, lastName } = this.props;
     const { greet, count, product } = this.state;
+
+    if(count > 5) {
+      throw new Error("something went wrong...")
+    }
 
     return (
       <>
