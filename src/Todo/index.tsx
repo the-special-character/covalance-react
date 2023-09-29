@@ -1,79 +1,84 @@
-import { PureComponent } from "react";
+import { PureComponent, createRef } from "react";
+import TodoForm from "./todoForm";
+import TodoList from "./todoList";
+import TodoFilter from "./todoFilter";
 
 class Todo extends PureComponent {
   state = {
-    todoText: "",
+    // todoText: "",
     todoList: [],
+    filterType: "all",
   };
 
-  changeText = (event) => {
-    this.setState({ todoText: event.target.value });
-  };
+  inputRef = createRef();
+
+  // changeText = (event) => {
+  //   this.setState({ todoText: event.target.value });
+  // };
 
   addTodo = (event) => {
     event.preventDefault();
 
-    this.setState(({ todoText, todoList }) => {
+    const todoText = this.inputRef.current;
+
+    if (todoText) {
+      this.setState(
+        ({ todoList }) => {
+          return {
+            todoList: [
+              ...todoList,
+              { text: todoText.value, id: new Date().valueOf(), isDone: false },
+            ],
+          };
+        },
+        () => {
+          todoText.value = "";
+        }
+      );
+    }
+  };
+
+  toggleCompleteTodo = (item) => {
+    this.setState(({ todoList }) => {
+      const index = todoList.findIndex((x) => x.id === item.id);
       return {
-        todoList: [...todoList, todoText],
-        todoText: "",
+        todoList: [
+          ...todoList.slice(0, index),
+          { ...todoList[index], isDone: !todoList[index].isDone },
+          ...todoList.slice(index + 1),
+        ],
       };
     });
   };
 
+  deleteTodo = (item) => {
+    this.setState(({ todoList }) => {
+      const index = todoList.findIndex((x) => x.id === item.id);
+      return {
+        todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
+      };
+    });
+  };
+
+  filterTodo = (filterType: string) => {
+    this.setState({ filterType: filterType });
+  };
+
   render() {
-    const { todoText, todoList } = this.state;
+    console.log("render");
+
+    const { todoList, filterType } = this.state;
     return (
       <div className="flex h-screen flex-col items-center">
         <h1 className="text-5xl my-10">Todo App</h1>
-        <form className="flex" onSubmit={this.addTodo}>
-          <div>
-            <label htmlFor="todoText" className="sr-only">
-              Todo Text
-            </label>
-            <input
-              type="text"
-              id="todoText"
-              className="rounded-l-md"
-              value={todoText}
-              onChange={this.changeText}
-            />
-          </div>
-          <button type="submit" className="btn rounded-l-none">
-            Add Todo
-          </button>
-        </form>
-        <div className="w-full flex-1">
-          {todoList.map((item) => {
-            return (
-              <div className="flex items-center m-4">
-                <div>
-                  <label htmlFor="isCompleted" className="sr-only">
-                    Completed
-                  </label>
-                  <input type="checkbox" name="isCompleted" id="isCompleted" />
-                </div>
-                <p className="flex-1 px-4">
-                  {item}
-                </p>
-                <button type="button" className="btn">
-                  Delete
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <div className="w-full flex">
-          <button type="button" className="btn flex-1 rounded-none">
-            All
-          </button>
-          <button type="button" className="btn flex-1 rounded-none">
-            Pending
-          </button>
-          <button type="button" className="btn flex-1 rounded-none">
-            Completed
-          </button>
-        </div>
+        <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
+        <TodoList
+          todoList={todoList}
+          filterType={filterType}
+          toggleCompleteTodo={this.toggleCompleteTodo}
+          deleteTodo={this.deleteTodo}
+        />
+        <TodoFilter filterTodo={this.filterTodo} />
       </div>
     );
   }
