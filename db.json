@@ -1,0 +1,45 @@
+{
+  "todoList": [
+    {
+      "text": "get milk",
+      "isDone": true,
+      "id": 3
+    },
+    {
+      "text": "learn react native",
+      "isDone": false,
+      "id": 4
+    },
+    {
+      "text": "hello",
+      "isDone": false,
+      "id": 5
+    },
+    {
+      "text": "asdfadfdf",
+      "isDone": false,
+      "id": 6
+    },
+    {
+      "text": "asdfafdasdfa",
+      "isDone": false,
+      "id": 7
+    },
+    {
+      "text": "asdasdf",
+      "isDone": false,
+      "id": 8
+    },
+    {
+      "text": "sfasd",
+      "isDone": false,
+      "id": 9
+    },
+    {
+      "text": "asdasfd",
+      "isDone": false,
+      "id": 10
+    }
+  ],
+  "products": []
+}
