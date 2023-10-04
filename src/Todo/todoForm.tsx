@@ -24,4 +24,8 @@ const TodoForm = forwardRef(({ addTodo }, ref) => {
 
 TodoForm.displayName = "TodoForm"
 
-export default memo(TodoForm);
+const memoTodoForm = memo(TodoForm)
+
+memoTodoForm.displayName = "MemoTodoForm"
+
+export default memoTodoForm;
