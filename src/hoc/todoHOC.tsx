@@ -1,11 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 export default (WrappedComponent) => {
   // class TodoWrapper extends PureComponent {
@@ -298,10 +292,10 @@ export default (WrappedComponent) => {
       } catch (error) {}
     }, []);
 
+    // component did mount
     useEffect(() => {
       loadData();
-    }, [])
-    
+    }, [loadData]);
 
     return (
       <>
