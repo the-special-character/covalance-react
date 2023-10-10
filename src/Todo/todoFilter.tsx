@@ -1,5 +1,9 @@
 import { memo } from "react";
 
+
+// State management
+// life cycle method
+// data Manipulation
 const TodoFilter = ({ filterTodo }) => {
   console.log("todo filter");
 
